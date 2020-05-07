@@ -1,6 +1,6 @@
 <template>
   <li :class="{completed: todo.completed, editing: this.editing}">
-    <input @change="markTodo" type="checkbox">
+    <input v-model="todo.completed" type="checkbox">
     <label
       @dblclick="editTodo"
     >{{ todo.title }}</label>
@@ -32,10 +32,6 @@ export default {
     }
   },
   methods: {
-    markTodo () {
-      this.todo.completed = !this.todo.completed
-    },
-
     removeTodo () {
       this.$emit('remove-todo', this.todo)
     },
