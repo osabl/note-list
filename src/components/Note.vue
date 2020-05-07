@@ -1,9 +1,17 @@
 <template>
   <div class="note">
-    <h2>{{ clipboard.title }}</h2>
+    <div class="actions">
+      <button @click="undoChange">undo</button>
+      <button @click="redoChange">redo</button>
+      <button @click="reset">cancel</button>
+      <button @click="saveChange">save</button>
+    </div>
+    <h2>{{ current.title }}</h2>
+
     <TodoAdd @add-todo="addTodo"/>
+
     <ul class="todo-list">
-      <Todo v-for="todo in clipboard.list"
+      <Todo v-for="todo in current.list"
       :todo="todo"
       :key="todo.id"
       @remove-todo="removeTodo"
@@ -18,14 +26,26 @@ import Todo from './Todo.vue'
 export default {
   data () {
     return {
-      history: [JSON.parse(JSON.stringify(this.note))],
-      clipboard: JSON.parse(JSON.stringify(this.note))
+      index: 0,
+      history: [JSON.stringify(this.note)],
+      current: JSON.parse(JSON.stringify(this.note)),
+      lock: false
     }
   },
   watch: {
-    clipboard: {
+    current: {
       handler () {
-        this.history.push(JSON.parse(JSON.stringify(this.clipboard)))
+        if (this.lock) {
+          this.lock = false
+          return
+        }
+
+        // trim array
+        if (this.history.length > this.index++) {
+          this.history.length = this.index
+        }
+
+        this.history.push(JSON.stringify(this.current))
       },
       deep: true
     }
@@ -37,11 +57,39 @@ export default {
   },
   methods: {
     removeTodo (target) {
-      this.clipboard.list = this.clipboard.list.filter(todo => todo.id !== target.id)
+      this.current.list = this.current.list.filter(todo => todo.id !== target.id)
     },
 
     addTodo (todo) {
-      this.clipboard.list.unshift(todo)
+      this.current.list.unshift(todo)
+    },
+
+    undoChange () {
+      if (this.index > 0) {
+        this.lock = true
+        this.index--
+        this.current = JSON.parse(this.history[this.index])
+      }
+    },
+
+    redoChange () {
+      if (this.index + 1 < this.history.length) {
+        this.lock = true
+        this.index++
+        this.current = JSON.parse(this.history[this.index])
+      }
+    },
+
+    reset () {
+      this.lock = true
+      this.index = 0
+      this.history = [JSON.stringify(this.note)]
+      this.current = JSON.parse(JSON.stringify(this.note))
+    },
+
+    saveChange () {
+      this.note = JSON.parse(JSON.stringify(this.current))
+      this.reset()
     }
   }
 }
