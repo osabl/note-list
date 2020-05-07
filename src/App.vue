@@ -1,28 +1,36 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Note</h1>
+    <hr />
+    <Note
+    :note="note"
+    />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Note from './components/Note.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Note
+  },
+  data () {
+    return {
+      note: {
+        title: 'Just do it',
+        list: [
+          { id: 1, title: 'test message 1', completed: false },
+          { id: 2, title: 'test message 2', completed: false },
+          { id: 3, title: 'test message 3', completed: false },
+          { id: 4, title: 'test message 4', completed: false }
+        ]
+      }
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
