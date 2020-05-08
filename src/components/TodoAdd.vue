@@ -16,15 +16,17 @@ export default {
   },
   methods: {
     addTodo () {
-      if (this.title.trim()) {
+      const title = this.title.trim()
+
+      if (title) {
         const todo = {
           id: Date.now(),
-          title: this.title,
+          title: title,
           completed: false
         }
 
-        this.$emit('add-todo', todo)
         this.title = ''
+        this.$emit('add-todo', todo)
       }
     }
   }
