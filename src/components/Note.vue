@@ -6,12 +6,12 @@
       <button @click="reset">cancel</button>
       <button @click="saveChange">save</button>
     </div>
-    <h2>{{ current.title }}</h2>
+    <h2>{{ note.title }}</h2>
 
     <TodoAdd @add-todo="addTodo"/>
 
     <ul class="todo-list">
-      <Todo v-for="todo in current.list"
+      <Todo v-for="todo in note.list"
       :todo="todo"
       :key="todo.id"
       @remove-todo="removeTodo"
@@ -27,48 +27,47 @@ export default {
   data () {
     return {
       index: 0,
-      history: [JSON.stringify(this.note)],
-      current: JSON.parse(JSON.stringify(this.note)),
+      history: [JSON.stringify(this.$store.getters.getCopyNoteById(0))],
+      note: this.$store.getters.getCopyNoteById(0),
       lock: false
     }
   },
   watch: {
-    current: {
+    note: {
       handler () {
         if (this.lock) {
           this.lock = false
           return
         }
 
-        // trim array
+        // trim array & increment index
         if (this.history.length > this.index++) {
           this.history.length = this.index
         }
 
-        this.history.push(JSON.stringify(this.current))
+        this.history.push(JSON.stringify(this.note))
       },
       deep: true
     }
   },
-  props: ['note'],
   components: {
     TodoAdd,
     Todo
   },
   methods: {
     removeTodo (target) {
-      this.current.list = this.current.list.filter(todo => todo.id !== target.id)
+      this.note.list = this.note.list.filter(todo => todo.id !== target.id)
     },
 
     addTodo (todo) {
-      this.current.list.unshift(todo)
+      this.note.list.unshift(todo)
     },
 
     undoChange () {
       if (this.index > 0) {
         this.lock = true
         this.index--
-        this.current = JSON.parse(this.history[this.index])
+        this.note = JSON.parse(this.history[this.index])
       }
     },
 
@@ -76,19 +75,19 @@ export default {
       if (this.index + 1 < this.history.length) {
         this.lock = true
         this.index++
-        this.current = JSON.parse(this.history[this.index])
+        this.note = JSON.parse(this.history[this.index])
       }
     },
 
     reset () {
       this.lock = true
       this.index = 0
-      this.history = [JSON.stringify(this.note)]
-      this.current = JSON.parse(JSON.stringify(this.note))
+      this.history = [JSON.stringify(this.$store.getters.getCopyNoteById(0))]
+      this.note = this.$store.getters.getCopyNoteById(0)
     },
 
     saveChange () {
-      this.note = JSON.parse(JSON.stringify(this.current))
+      this.$store.dispatch('updateNote', this.note)
       this.reset()
     }
   }
