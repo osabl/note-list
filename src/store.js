@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    notes: [{
+    noteList: [{
       id: 0,
       title: 'Note 1',
       list: [
@@ -27,10 +27,10 @@ export default new Vuex.Store({
   },
   mutations: {
     createNote (state, note) {
-      state.notes.push(note)
+      state.noteList.push(note)
     },
     updateNote (state, note) {
-      state.notes[state.notes.findIndex(oldNote => oldNote.id === note.id)] = JSON.parse(JSON.stringify(note))
+      state.noteList[state.noteList.findIndex(oldNote => oldNote.id === note.id)] = JSON.parse(JSON.stringify(note))
     }
   },
   actions: {
@@ -42,16 +42,11 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    noteById (state) {
-      return id => state.notes.find(note => note.id === id)
+    getNoteList (state) {
+      return state.noteList
     },
-    getCopyNoteById (state) {
-      return id => {
-        const note = state.notes.find(note => note.id === id)
-        const copyNote = JSON.parse(JSON.stringify(note))
-
-        return copyNote
-      }
+    getNoteById (state) {
+      return id => state.noteList.find(note => note.id === id)
     }
   }
 })

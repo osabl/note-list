@@ -1,20 +1,21 @@
 <template>
-  <div class="note">
+  <!-- check to wait for instanceof to load -->
+  <div v-if="currentInstance" class="note">
     <div class="note__header">
-      <router-link to="/">Home</router-link>
+      <router-link to="/">Back</router-link>
       <NoteActions
         @undo="undoChange"
         @redo="redoChange"
         @cancel="reset"
         @save="saveChange"
       />
-      <h2>{{ note.title }}</h2>
+      <h2>{{ currentInstance.title }}</h2>
     </div>
 
     <div class="note__body">
       <TodoAdd @add-todo="addTodo"/>
       <TodoList
-        :todoList="note.list"
+        :todoList="currentInstance.list"
         @remove-todo="removeTodo"
       />
     </div>
@@ -30,13 +31,22 @@ export default {
   data () {
     return {
       index: 0,
-      history: [JSON.stringify(this.$store.getters.getCopyNoteById(0))],
-      note: this.$store.getters.getCopyNoteById(0),
+      history: [],
+      currentInstance: null,
       lock: false
     }
   },
+  computed: {
+    note () {
+      return this.$store.getters.getNoteById(+this.$route.params.id)
+    }
+  },
+  mounted () {
+    this.history.push(JSON.stringify(this.note))
+    this.currentInstance = JSON.parse(JSON.stringify(this.note))
+  },
   watch: {
-    note: {
+    currentInstance: {
       handler () {
         if (this.lock) {
           this.lock = false
@@ -48,7 +58,7 @@ export default {
           this.history.length = this.index
         }
 
-        this.history.push(JSON.stringify(this.note))
+        this.history.push(JSON.stringify(this.currentInstance))
       },
       deep: true
     }
@@ -60,33 +70,33 @@ export default {
   },
   methods: {
     removeTodo (target) {
-      this.note.list = this.note.list.filter(todo => todo.id !== target.id)
+      this.currentInstance.list = this.currentInstance.list.filter(todo => todo.id !== target.id)
     },
     addTodo (todo) {
-      this.note.list.unshift(todo)
+      this.currentInstance.list.unshift(todo)
     },
     undoChange () {
       if (this.index > 0) {
         this.lock = true
         this.index--
-        this.note = JSON.parse(this.history[this.index])
+        this.currentInstance = JSON.parse(this.history[this.index])
       }
     },
     redoChange () {
       if (this.index + 1 < this.history.length) {
         this.lock = true
         this.index++
-        this.note = JSON.parse(this.history[this.index])
+        this.currentInstance = JSON.parse(this.history[this.index])
       }
     },
     reset () {
       this.lock = true
       this.index = 0
-      this.history = [JSON.stringify(this.$store.getters.getCopyNoteById(0))]
-      this.note = this.$store.getters.getCopyNoteById(0)
+      this.history = [JSON.stringify(this.note)]
+      this.currentInstance = JSON.parse(JSON.stringify(this.note))
     },
     saveChange () {
-      this.$store.dispatch('updateNote', this.note)
+      this.$store.dispatch('updateNote', this.currentInstance)
       this.reset()
     }
   }
