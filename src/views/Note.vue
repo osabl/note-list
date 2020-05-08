@@ -1,23 +1,28 @@
 <template>
-  <!-- check to wait for instanceof to load -->
-  <div v-if="currentInstance" class="note">
-    <div class="note__header">
-      <router-link to="/">Back</router-link>
-      <NoteActions
-        @undo="undoChange"
-        @redo="redoChange"
-        @cancel="reset"
-        @save="saveChange"
-      />
-      <h2>{{ currentInstance.title }}</h2>
-    </div>
+  <div>
+    <div v-if="getNote()" class="note">
+      <div class="note__header">
+        <router-link to="/">Back</router-link>
+        <NoteActions
+          @undo="undoChange"
+          @redo="redoChange"
+          @cancel="reset"
+          @save="saveChange"
+        />
+        <h2>{{ currentInstance.title }}</h2>
+      </div>
 
-    <div class="note__body">
-      <TodoAdd @add-todo="addTodo"/>
-      <TodoList
-        :todoList="currentInstance.list"
-        @remove-todo="removeTodo"
-      />
+      <div class="note__body">
+        <TodoAdd @add-todo="addTodo"/>
+        <TodoList
+          :todoList="currentInstance.list"
+          @remove-todo="removeTodo"
+        />
+      </div>
+    </div>
+    <div v-else>
+      <h1>Task not found!</h1>
+      <router-link to="/">BACK</router-link>
     </div>
   </div>
 </template>

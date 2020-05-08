@@ -1,11 +1,13 @@
 <template>
-  <ul class="todo-list">
-    <TodoItem v-for="todoItem in todoList"
+  <ul v-if="todoList.length" class="todo-list">
+    <TodoItem
+      v-for="todoItem in todoList"
       :todo="todoItem"
       :key="todoItem.id"
       @remove-todo="removeTodo"
     />
   </ul>
+  <p v-else>Todo list is empty!</p>
 </template>
 
 <script>
