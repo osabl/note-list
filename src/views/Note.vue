@@ -31,19 +31,10 @@ export default {
   data () {
     return {
       index: 0,
-      history: [],
-      currentInstance: null,
+      history: [JSON.stringify(this.getNote())],
+      currentInstance: JSON.parse(JSON.stringify(this.getNote())),
       lock: false
     }
-  },
-  computed: {
-    note () {
-      return this.$store.getters.getNoteById(+this.$route.params.id)
-    }
-  },
-  mounted () {
-    this.history.push(JSON.stringify(this.note))
-    this.currentInstance = JSON.parse(JSON.stringify(this.note))
   },
   watch: {
     currentInstance: {
@@ -69,6 +60,9 @@ export default {
     TodoList
   },
   methods: {
+    getNote () {
+      return this.$store.getters.getNoteById(+this.$route.params.id)
+    },
     removeTodo (target) {
       this.currentInstance.list = this.currentInstance.list.filter(todo => todo.id !== target.id)
     },
@@ -92,8 +86,8 @@ export default {
     reset () {
       this.lock = true
       this.index = 0
-      this.history = [JSON.stringify(this.note)]
-      this.currentInstance = JSON.parse(JSON.stringify(this.note))
+      this.history = [JSON.stringify(this.getNote())]
+      this.currentInstance = JSON.parse(JSON.stringify(this.getNote()))
     },
     saveChange () {
       this.$store.dispatch('updateNote', this.currentInstance)
