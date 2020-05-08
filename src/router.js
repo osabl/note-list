@@ -8,10 +8,10 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: () => import('@/views/Notes.vue')
+      component: () => import('@/views/NoteList.vue')
     },
     {
-      path: '/note',
+      path: '/note/:id',
       component: () => import('@/views/Note.vue')
     }
   ]
