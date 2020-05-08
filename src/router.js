@@ -7,6 +7,10 @@ export default new Router({
   mode: 'history',
   routes: [
     {
+      path: '*',
+      component: () => import('@/views/404.vue')
+    },
+    {
       path: '/',
       component: () => import('@/views/NoteList.vue')
     },
