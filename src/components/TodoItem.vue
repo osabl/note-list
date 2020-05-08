@@ -1,17 +1,13 @@
 <template>
-  <li :class="{completed: todo.completed, editing: this.editing}">
+  <li class="todo-item" :class="{completed: todo.completed, editing: this.editing}">
     <input v-model="todo.completed" type="checkbox">
-    <label
-      @dblclick="editTodo"
-    >{{ todo.title }}</label>
-    <input
+    <label @dblclick="editTodo">{{ todo.title }}</label>
+    <input class="edit" type="text"
       v-focus="editing"
       @blur="doneEdit"
       @keyup.enter="doneEdit"
       @keyup.esc="cancelEdit"
-      v-model="title"
-      class="edit"
-      type="text">
+      v-model="title">
     <button class="btn btn-edit" @click="editTodo">edit</button>
     <button class="btn btn-remove" @click="removeTodo">-</button>
   </li>
@@ -22,7 +18,7 @@ export default {
   data () {
     return {
       title: this.todo.title,
-      editing: false
+      editing: false // trigger for the focus directive
     }
   },
   props: {
@@ -35,12 +31,10 @@ export default {
     removeTodo () {
       this.$emit('remove-todo', this.todo)
     },
-
     editTodo () {
       this.editing = true
       this.beforeEditCache = this.todo.title
     },
-
     doneEdit () {
       this.editing = false
       this.beforeEditCache = null
@@ -50,14 +44,13 @@ export default {
       }
       this.todo.title = this.title
     },
-
     cancelEdit (todo) {
       this.editing = false
       this.title = this.beforeEditCache
     }
   },
   directives: {
-    focus: function (el, binding) {
+    focus (el, binding) {
       if (binding.value) {
         el.focus()
       }

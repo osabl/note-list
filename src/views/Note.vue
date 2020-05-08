@@ -1,27 +1,30 @@
 <template>
   <div class="note">
-    <div class="actions">
-      <button @click="undoChange">undo</button>
-      <button @click="redoChange">redo</button>
-      <button @click="reset">cancel</button>
-      <button @click="saveChange">save</button>
+    <div class="note__header">
+      <router-link to="/">Home</router-link>
+      <NoteActions
+        @undo="undoChange"
+        @redo="redoChange"
+        @cancel="reset"
+        @save="saveChange"
+      />
+      <h2>{{ note.title }}</h2>
     </div>
-    <h2>{{ note.title }}</h2>
 
-    <TodoAdd @add-todo="addTodo"/>
-
-    <ul class="todo-list">
-      <Todo v-for="todo in note.list"
-      :todo="todo"
-      :key="todo.id"
-      @remove-todo="removeTodo"
-    /></ul>
+    <div class="note__body">
+      <TodoAdd @add-todo="addTodo"/>
+      <TodoList
+        :todoList="note.list"
+        @remove-todo="removeTodo"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import TodoAdd from './TodoAdd.vue'
-import Todo from './Todo.vue'
+import NoteActions from '@/components/NoteActions.vue'
+import TodoAdd from '@/components/TodoAdd.vue'
+import TodoList from '@/components/TodoList.vue'
 
 export default {
   data () {
@@ -52,17 +55,16 @@ export default {
   },
   components: {
     TodoAdd,
-    Todo
+    NoteActions,
+    TodoList
   },
   methods: {
     removeTodo (target) {
       this.note.list = this.note.list.filter(todo => todo.id !== target.id)
     },
-
     addTodo (todo) {
       this.note.list.unshift(todo)
     },
-
     undoChange () {
       if (this.index > 0) {
         this.lock = true
@@ -70,7 +72,6 @@ export default {
         this.note = JSON.parse(this.history[this.index])
       }
     },
-
     redoChange () {
       if (this.index + 1 < this.history.length) {
         this.lock = true
@@ -78,14 +79,12 @@ export default {
         this.note = JSON.parse(this.history[this.index])
       }
     },
-
     reset () {
       this.lock = true
       this.index = 0
       this.history = [JSON.stringify(this.$store.getters.getCopyNoteById(0))]
       this.note = this.$store.getters.getCopyNoteById(0)
     },
-
     saveChange () {
       this.$store.dispatch('updateNote', this.note)
       this.reset()
