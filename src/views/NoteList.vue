@@ -46,7 +46,7 @@ export default {
         list: []
       }
 
-      this.$store.dispatch('createNote', note)
+      this.$store.dispatch('addNote', note)
     },
     removeNote (note) {
       console.log(note)
