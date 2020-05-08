@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     getNote () {
-      return this.$store.getters.getNoteById(+this.$route.params.id)
+      return this.$store.getters.getNoteById(+this.$route.params.id) || null
     },
     removeTodo (target) {
       this.currentInstance.list = this.currentInstance.list.filter(todo => todo.id !== target.id)
