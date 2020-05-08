@@ -14,6 +14,11 @@ export default new Vuex.Store({
     },
     updateNote (state, note) {
       state.noteList[state.noteList.findIndex(oldNote => oldNote.id === note.id)] = JSON.parse(JSON.stringify(note))
+      localStorage.setItem('noteList', JSON.stringify(state.noteList))
+    },
+    removeNote (state, note) {
+      state.noteList = state.noteList.filter(oldNote => oldNote.id !== note.id)
+      localStorage.setItem('noteList', JSON.stringify(state.noteList))
     }
   },
   actions: {
@@ -22,6 +27,9 @@ export default new Vuex.Store({
     },
     updateNote ({ commit }, note) {
       commit('updateNote', note)
+    },
+    removeNote ({ commit }, note) {
+      commit('removeNote', note)
     }
   },
   getters: {
