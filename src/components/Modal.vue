@@ -1,17 +1,25 @@
 <template>
   <div v-if="show" class="modal-mask">
+
     <div class="modal">
+
       <div class="modal__header">
         <h2 class="modal__title">Confirm your actions!</h2>
       </div>
+
       <div class="modal__body">
         <slot>Are you sure you want to do this?</slot>
       </div>
+
       <div class="modal__footer">
-        <button @click="confirm" class="btn confirm">Yes</button>
-        <button @click="cancel" class="btn cancel">No</button>
+        <button class="btn confirm"
+          @click="confirm">Yes</button>
+        <button class="btn cancel"
+          @click="cancel">No</button>
       </div>
+
     </div>
+
   </div>
 </template>
 

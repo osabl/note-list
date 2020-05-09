@@ -1,9 +1,9 @@
 <template>
   <form @submit.prevent="addTodo">
-    <input
-    type="text"
-    v-model="title">
+
+    <input type="text" v-model="title">
     <button type="submit">+</button>
+
   </form>
 </template>
 
@@ -14,6 +14,7 @@ export default {
       title: ''
     }
   },
+
   methods: {
     addTodo () {
       const title = this.title.trim()

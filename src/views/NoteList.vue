@@ -1,14 +1,23 @@
 <template>
-  <div>
-    <h1>Hello world!</h1>
-    <div @click="createNote">
-      <h2>Create new note</h2>
-      <div>
+  <div class="note-list">
+
+    <div class="note note-creator"
+      @click="createNote">
+      <div class="note__header">
+        <h2 class="note__title">Create new note</h2>
+      </div>
+      <div class="note__body">
         Click me to create new note
       </div>
     </div>
 
-    <NotePreview v-for="note in noteList" :key="note.id" :note="note" @removeNote="removeNote"/>
+    <NotePreview
+      v-for="note in noteList"
+      :key="note.id"
+      :note="note"
+      @removeNote="removeNote"
+    />
+
   </div>
 </template>
 
@@ -19,11 +28,13 @@ export default {
   components: {
     NotePreview
   },
+
   computed: {
     noteList () {
       return this.$store.getters.getNoteList
     }
   },
+
   methods: {
     createNote () {
       const note = {

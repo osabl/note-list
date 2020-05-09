@@ -1,13 +1,23 @@
 <template>
   <div class="note note-preview">
+
     <div class="note__actions">
-      <Modal @confirmed="removeNote(note)" @canceled="showModal = false" :show="showModal"><p>Are you sure?</p></Modal>
-      <button @click="showModal = true" class="remove">Delete</button>
+      <Modal
+        :show="showModal"
+        @confirmed="removeNote(note)"
+        @canceled="showModal = false">
+        <p>Are you sure?</p>
+      </Modal>
+      <button class="btn remove"
+        @click="showModal = true">Delete</button>
     </div>
+
     <router-link :to="'/note/' + note.id">
+
       <div class="note__header">
         <h2 class="note__title">{{ note.title }}</h2>
       </div>
+
       <div class="note__body">
         <ul v-if="note.list.length" class="note__list">
           <li class="note__item"
@@ -19,7 +29,9 @@
         </ul>
         <p v-else>This note is empty...</p>
       </div>
+
     </router-link>
+
   </div>
 </template>
 
@@ -27,20 +39,24 @@
 import Modal from '@/components/Modal.vue'
 
 export default {
+  components: {
+    Modal
+  },
+
   props: ['note'],
+
   data () {
     return {
       showModal: false
     }
   },
+
   computed: {
     noteList () {
       return this.note.list.slice(0, 5)
     }
   },
-  components: {
-    Modal
-  },
+
   methods: {
     removeNote (note) {
       this.showModal = false

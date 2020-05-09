@@ -1,32 +1,41 @@
 <template>
   <li class="todo-item" :class="{completed: todo.completed, editing: this.editing}">
-    <input v-model="todo.completed" type="checkbox">
+
+    <input type="checkbox" v-model="todo.completed">
+
     <label @dblclick="editTodo">{{ todo.title }}</label>
     <input class="edit" type="text"
       v-focus="editing"
       @blur="doneEdit"
       @keyup.enter="doneEdit"
       @keyup.esc="cancelEdit"
-      v-model="title">
-    <button class="btn btn-edit" @click="editTodo">edit</button>
-    <button class="btn btn-remove" @click="removeTodo">-</button>
+      v-model="title"
+    >
+
+    <button class="btn btn-edit"
+      @click="editTodo">edit</button>
+    <button class="btn btn-remove"
+      @click="removeTodo">-</button>
+
   </li>
 </template>
 
 <script>
 export default {
-  data () {
-    return {
-      title: this.todo.title,
-      editing: false // trigger for the focus directive
-    }
-  },
   props: {
     todo: {
       type: Object,
       required: true
     }
   },
+
+  data () {
+    return {
+      title: this.todo.title,
+      editing: false // trigger for the focus directive
+    }
+  },
+
   methods: {
     removeTodo () {
       this.$emit('remove-todo', this.todo)
@@ -49,6 +58,7 @@ export default {
       this.title = this.beforeEditCache
     }
   },
+
   directives: {
     focus (el, binding) {
       if (binding.value) {

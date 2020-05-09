@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     noteList: JSON.parse(localStorage.getItem('noteList') || '[]')
   },
+
   mutations: {
     addNote (state, note) {
       state.noteList.unshift(note)
@@ -21,6 +22,7 @@ export default new Vuex.Store({
       localStorage.setItem('noteList', JSON.stringify(state.noteList))
     }
   },
+
   actions: {
     addNote ({ commit }, note) {
       commit('addNote', note)
@@ -32,6 +34,7 @@ export default new Vuex.Store({
       commit('removeNote', note)
     }
   },
+
   getters: {
     getNoteList (state) {
       return state.noteList
