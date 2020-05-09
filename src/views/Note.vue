@@ -6,8 +6,10 @@
         <div class="note-actions">
           <button @click="undoChange">undo</button>
           <button @click="redoChange">redo</button>
-          <button @click="reset">cancel</button>
-          <button @click="removeNote">remove</button>
+          <Modal @confirm="cancelChange" @cancel="modalCancel = false" :show="modalCancel"><p>Are you sure you want to undo the changes?</p></Modal>
+          <button @click="modalCancel = true">cancel</button>
+          <Modal @confirm="removeNote" @cancel="modalRemove = false" :show="modalRemove"><p>Are you sure you want to remove the note?</p></Modal>
+          <button @click="modalRemove = true">remove</button>
           <button @click="saveChange">save</button>
         </div>
 
@@ -30,7 +32,7 @@
 </template>
 
 <script>
-import NoteActions from '@/components/NoteActions.vue'
+import Modal from '@/components/Modal.vue'
 import TodoAdd from '@/components/TodoAdd.vue'
 import TodoList from '@/components/TodoList.vue'
 
@@ -40,7 +42,9 @@ export default {
       index: 0,
       history: [JSON.stringify(this.getNote())],
       currentInstance: JSON.parse(JSON.stringify(this.getNote())),
-      lock: false
+      lock: false,
+      modalRemove: false, // trigger for show modal dialog to confirm remove note
+      modalCancel: false // trigger for show modal dialog to confirm cancel changes
     }
   },
   watch: {
@@ -63,12 +67,17 @@ export default {
   },
   components: {
     TodoAdd,
-    NoteActions,
-    TodoList
+    TodoList,
+    Modal
   },
   methods: {
     getNote () {
       return this.$store.getters.getNoteById(+this.$route.params.id) || null
+    },
+    removeNote () {
+      this.modalRemove = false
+      this.$store.dispatch('removeNote', this.getNote())
+      this.$router.push('/')
     },
     removeTodo (target) {
       this.currentInstance.list = this.currentInstance.list.filter(todo => todo.id !== target.id)
@@ -90,7 +99,8 @@ export default {
         this.currentInstance = JSON.parse(this.history[this.index])
       }
     },
-    reset () {
+    cancelChange () {
+      this.modalCancel = false
       this.lock = true
       this.index = 0
       this.history = [JSON.stringify(this.getNote())]
@@ -98,7 +108,6 @@ export default {
     },
     saveChange () {
       this.$store.dispatch('updateNote', this.currentInstance)
-      this.reset()
     }
   }
 }
