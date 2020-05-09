@@ -1,7 +1,7 @@
 <template>
   <div class="note note-preview">
     <div class="note__actions">
-      <Modal @confirm="removeNote(note)" @cancel="showModal = false" :show="showModal"><p>Are you sure?</p></Modal>
+      <Modal @confirmed="removeNote(note)" @canceled="showModal = false" :show="showModal"><p>Are you sure?</p></Modal>
       <button @click="showModal = true" class="remove">Delete</button>
     </div>
     <router-link :to="'/note/' + note.id">

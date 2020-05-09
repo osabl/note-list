@@ -17,13 +17,18 @@
 
 <script>
 export default {
-  props: ['show'],
+  props: {
+    show: {
+      type: Boolean,
+      required: true
+    }
+  },
   methods: {
     confirm () {
-      this.$emit('confirm')
+      this.$emit('confirmed')
     },
     cancel () {
-      this.$emit('cancel')
+      this.$emit('canceled')
     }
   }
 }

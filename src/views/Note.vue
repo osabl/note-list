@@ -4,13 +4,24 @@
       <div class="note__header">
         <router-link to="/">Back</router-link>
         <div class="note-actions">
-          <button @click="undoChange">undo</button>
-          <button @click="redoChange">redo</button>
-          <Modal @confirm="cancelChange" @cancel="modalCancel = false" :show="modalCancel"><p>Are you sure you want to undo the changes?</p></Modal>
-          <button @click="modalCancel = true">cancel</button>
-          <Modal @confirm="removeNote" @cancel="modalRemove = false" :show="modalRemove"><p>Are you sure you want to remove the note?</p></Modal>
+           <Modal :show="modalCancel"
+            @confirmed="cancelChange"
+            @canceled="modalCancel = false"
+          >
+            <p>Are you sure you want to undo the changes?</p>
+          </Modal>
+          <Modal :show="modalRemove"
+            @confirmed="removeNote"
+            @canceled="modalRemove = false"
+          >
+            <p>Are you sure you want to remove the note?</p>
+          </Modal>
+
+          <button @click="undoChange" :disabled="index === 0">undo</button>
+          <button @click="redoChange" :disabled="index + 1 === history.length">redo</button>
+          <button @click="modalCancel = true" :disabled="!isNoteChanged">cancel</button>
           <button @click="modalRemove = true">remove</button>
-          <button @click="saveChange">save</button>
+          <button @click="saveChange" :disabled="!isNoteChanged">save</button>
         </div>
 
         <h2>{{ currentInstance.title }}</h2>
@@ -44,7 +55,14 @@ export default {
       currentInstance: JSON.parse(JSON.stringify(this.getNote())),
       lock: false,
       modalRemove: false, // trigger for show modal dialog to confirm remove note
-      modalCancel: false // trigger for show modal dialog to confirm cancel changes
+      modalCancel: false, // trigger for show modal dialog to confirm cancel changes
+      backdoor: 0
+    }
+  },
+  computed: {
+    isNoteChanged () {
+      console.log(this.backdoor)
+      return this.history[this.index] !== JSON.stringify(this.getNote())
     }
   },
   watch: {
@@ -108,6 +126,7 @@ export default {
     },
     saveChange () {
       this.$store.dispatch('updateNote', this.currentInstance)
+      this.backdoor++
     }
   }
 }
