@@ -43,6 +43,7 @@ export default {
   },
   methods: {
     removeNote (note) {
+      this.showModal = false
       this.$emit('removeNote', note)
     }
   }
