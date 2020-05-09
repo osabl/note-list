@@ -8,31 +8,17 @@
       </div>
     </div>
 
-    <router-link
-      v-for="note in noteList"
-      :key="note.id"
-      :to="'/note/' + note.id">
-      <div class="note__header">
-        <h2>{{ note.title }}</h2>
-        <button @click="removeNote(note)">remove</button>
-      </div>
-      <div class="note__body">
-        <ul v-if="note.list.length" class="note__list">
-          <li class="note__item"
-            v-for="item in note.list.slice(0, 5)"
-            :key="item.id">
-            <input type="checkbox" :checked="item.completed">
-            <label>{{ item.title }}</label>
-          </li>
-        </ul>
-        <p v-else>This note is empty...</p>
-      </div>
-    </router-link>
+    <NotePreview v-for="note in noteList" :key="note.id" :note="note" @removeNote="removeNote"/>
   </div>
 </template>
 
 <script>
+import NotePreview from '@/views/NotePreview.vue'
+
 export default {
+  components: {
+    NotePreview
+  },
   computed: {
     noteList () {
       return this.$store.getters.getNoteList
@@ -49,7 +35,6 @@ export default {
       this.$store.dispatch('addNote', note)
     },
     removeNote (note) {
-      console.log(note)
       this.$store.dispatch('removeNote', note)
     }
   }
