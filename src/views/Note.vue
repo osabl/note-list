@@ -56,12 +56,17 @@ export default {
       lock: false,
       modalRemove: false, // trigger for show modal dialog to confirm remove note
       modalCancel: false, // trigger for show modal dialog to confirm cancel changes
-      backdoor: 0
+      backdoor: 0 // hack to update computed property
     }
   },
   computed: {
     isNoteChanged () {
-      console.log(this.backdoor)
+      // Hack to update this computed property.
+      // This is necessary to update the state of the buttons after note saving.
+      // I did not find another way to solve this problem, yet.
+      // I will change this value to update the property
+      console.log(this.backdoor) // console.log -> because the StandardJS prohibits the use of simple property references
+
       return this.history[this.index] !== JSON.stringify(this.getNote())
     }
   },
@@ -126,7 +131,7 @@ export default {
     },
     saveChange () {
       this.$store.dispatch('updateNote', this.currentInstance)
-      this.backdoor++
+      this.backdoor++ // hack to update computed property after saving
     }
   }
 }
