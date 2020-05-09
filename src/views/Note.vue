@@ -3,12 +3,14 @@
     <div v-if="getNote()" class="note">
       <div class="note__header">
         <router-link to="/">Back</router-link>
-        <NoteActions
-          @undo="undoChange"
-          @redo="redoChange"
-          @cancel="reset"
-          @save="saveChange"
-        />
+        <div class="note-actions">
+          <button @click="undoChange">undo</button>
+          <button @click="redoChange">redo</button>
+          <button @click="reset">cancel</button>
+          <button @click="removeNote">remove</button>
+          <button @click="saveChange">save</button>
+        </div>
+
         <h2>{{ currentInstance.title }}</h2>
       </div>
 
