@@ -33,6 +33,7 @@ export default {
       }
 
       this.$store.dispatch('addNote', note)
+      this.$router.push('/note/' + note.id)
     },
     removeNote (note) {
       this.$store.dispatch('removeNote', note)
