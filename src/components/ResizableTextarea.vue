@@ -11,7 +11,7 @@
       @input="resizeAndSend($event.target)"
       @focus="$emit('focus', $event)"
       @blur="$emit('blur', $event)"
-      @keyup="$emit('keyup', $event)">
+      @keydown.enter="$emit('keydown-enter', $event)">
     </textarea>
   </div>
 </template>
@@ -53,25 +53,33 @@ export default {
 </script>
 
 <style scoped>
-  .textarea-wrapper {
-    width: 100%;
-    height: auto;
-    padding: 1px;
+.textarea-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    border: 1px solid black;
-  }
+  height: auto;
+  padding: 1px;
+}
 
-  textarea {
-    overflow-y: hidden;
+textarea {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  line-height: 1.5em;
 
-    width: 100%;
-    height: 100%;
-    padding: 0;
+  overflow-y: hidden;
 
-    resize: none;
+  width: 100%;
+  height: 100%;
+  padding: 0 1em;
 
-    border: none;
-    outline: none;
-  }
+  resize: none;
+  transition: 0.4s ease;
+
+  color: rgb(30, 30, 30);
+  border: none;
+  border-bottom: 1px solid rgba(179, 179, 179, 0);
+  outline: none;
+}
 
 </style>

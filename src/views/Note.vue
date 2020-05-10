@@ -4,43 +4,53 @@
     <div v-if="getNote()" class="note">
 
       <div class="note__header">
+        <Modal :show="showModalCancel"
+          @confirmed="cancelChange"
+          @canceled="showModalCancel = false">
+          <p>Are you sure you want to cancel the changes?</p>
+        </Modal>
+        <Modal :show="showModalRemove"
+          @confirmed="removeNote"
+          @canceled="showModalRemove = false">
+          <p>Are you sure you want to remove the note?</p>
+        </Modal>
+
+        <router-link to="/" class="btn"><span class="icon icon-back"></span></router-link>
+
         <div class="note__actions">
-
-          <Modal :show="showModalCancel"
-            @confirmed="cancelChange"
-            @canceled="showModalCancel = false">
-            <p>Are you sure you want to cancel the changes?</p>
-          </Modal>
-          <Modal :show="showModalRemove"
-            @confirmed="removeNote"
-            @canceled="showModalRemove = false">
-            <p>Are you sure you want to remove the note?</p>
-          </Modal>
-
-          <router-link to="/">Back</router-link>
-
           <button class="btn undo"
             :disabled="index === 0"
-            @click="undoChange">undo</button>
+            @click="undoChange">
+            <span class="icon icon-undo"></span>
+          </button>
           <button class="btn redo"
             :disabled="index + 1 === history.length"
-            @click="redoChange">redo</button>
+            @click="redoChange">
+            <span class="icon icon-redo"></span>
+          </button>
           <button class="btn cancel"
             :disabled="!isNoteChanged"
-            @click="showModalCancel = true">cancel</button>
+            @click="showModalCancel = true">
+            <span class="icon icon-cancel"></span>
+          </button>
           <button class="btn remove"
-            @click="showModalRemove = true">remove</button>
+            @click="showModalRemove = true">
+            <span class="icon icon-remove"></span>
+          </button>
           <button class="btn save"
             :disabled="!isNoteChanged"
-            @click="saveChange">save</button>
-
+            @click="saveChange">
+            <span class="icon icon-save"></span>
+          </button>
         </div>
-
-        <h2 class="note__title">{{ currentState.title }}</h2>
-
       </div>
 
       <div class="note__body">
+        <ResizableTextarea class="note__title"
+          v-model="currentState.title"
+          :placeholder="'Title'"
+        />
+
         <TodoAdd @add-todo="addTodo"/>
         <TodoList
           :todoList="currentState.list"
@@ -63,12 +73,14 @@
 import Modal from '@/components/Modal.vue'
 import TodoAdd from '@/components/TodoAdd.vue'
 import TodoList from '@/components/TodoList.vue'
+import ResizableTextarea from '@/components/ResizableTextarea.vue'
 
 export default {
   components: {
     TodoAdd,
     TodoList,
-    Modal
+    Modal,
+    ResizableTextarea
   },
 
   data () {
@@ -154,3 +166,78 @@ export default {
   }
 }
 </script>
+
+<style>
+.note-wrapper {
+  min-width: 280px;
+  min-height: 100vh;
+  padding: 1em;
+
+  background: rgb(254,192,226);
+  background: linear-gradient(90deg, rgb(240, 162, 227) 0%, rgb(236, 167, 250) 35%, rgb(213, 183, 247) 100%);
+}
+.note__header {
+  display: flex;
+  justify-content: space-between;
+
+  margin: 0 0.5em;
+}
+.note {
+  max-width: 700px;
+  margin: 0.2em;
+  padding: 0.8em 0.5em;
+
+  border-radius: 1.5em;
+  background-color: #ffffff;
+  -webkit-box-shadow: 0 0 21px 4px rgba(0,0,0,0.25);
+     -moz-box-shadow: 0 0 21px 4px rgba(0,0,0,0.25);
+          box-shadow: 0 0 21px 4px rgba(0,0,0,0.25);
+}
+@media screen and (min-width: 425px) {
+  .note {
+    margin: 1em;
+  }
+}
+@media screen and (min-width: 768px) {
+  .note {
+    margin: 3em auto;
+  }
+}
+.btn {
+  font-size: 20px;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+
+  color: rgb(121, 54, 141);
+  border: none;
+  background: none;
+}
+
+.btn:hover {
+  color: rgb(212, 0, 255);
+}
+
+.btn:disabled {
+  cursor: default;
+
+  color: rgb(167, 167, 167);
+}
+
+.note__title {
+  margin: 1em;
+  margin-top: 0.7em;
+  margin-bottom: 2em;
+
+  text-align: center;
+}
+
+.note__title textarea {
+  font-size: 32px;
+
+  text-align: center;
+
+  color: rgb(34, 34, 34);
+}
+
+</style>

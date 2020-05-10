@@ -1,7 +1,7 @@
 <template>
-  <ul v-if="todoList.length" class="todo-list">
+  <ul v-if="todoList.length" class="todo__list">
 
-    <TodoItem
+    <TodoItem ref="input"
       v-for="todoItem in todoList"
       :todo="todoItem"
       :key="todoItem.id"
@@ -9,7 +9,7 @@
     />
 
   </ul>
-  <p v-else>Todo list is empty!</p>
+  <p v-else class="empty">Todo list is empty!</p>
 </template>
 
 <script>
@@ -31,3 +31,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .todo__list {
+    padding-left: 0;
+  }
+
+  .empty {
+    text-align: center;
+  }
+</style>
