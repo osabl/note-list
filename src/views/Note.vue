@@ -168,14 +168,6 @@ export default {
 </script>
 
 <style>
-.note-wrapper {
-  min-width: 280px;
-  min-height: 100vh;
-  padding: 1em;
-
-  background: rgb(254,192,226);
-  background: linear-gradient(90deg, rgb(240, 162, 227) 0%, rgb(236, 167, 250) 35%, rgb(213, 183, 247) 100%);
-}
 .note__header {
   display: flex;
   justify-content: space-between;
