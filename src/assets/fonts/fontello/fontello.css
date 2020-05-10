@@ -4,8 +4,7 @@
   src: url('./fontello.eot?12828810#iefix') format('embedded-opentype'),
        url('./fontello.woff2?12828810') format('woff2'),
        url('./fontello.woff?12828810') format('woff'),
-       url('./fontello.ttf?12828810') format('truetype'),
-       url('./fontello.svg?12828810#fontello') format('svg');
+       url('./fontello.ttf?12828810') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
