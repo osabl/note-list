@@ -118,17 +118,9 @@ export default {
 }
 
 .note-list {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
-@media screen and (min-width: 768px) {
-  .note-list {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-@media screen and (min-width: 1280px) {
-  .note-list {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-}
+
 </style>
