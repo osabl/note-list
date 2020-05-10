@@ -60,7 +60,7 @@ export default {
   min-width: 300px;
   width: auto;
   max-width: 700px;
-  margin: 1.5em auto;
+  margin: 2rem;
   padding: 0.8em 0.5em;
 
   border-radius: 1.5em;
