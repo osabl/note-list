@@ -41,7 +41,7 @@ export default {
     createNote () {
       const note = {
         id: Date.now(),
-        title: 'Title',
+        title: '',
         list: []
       }
 
