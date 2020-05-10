@@ -7,7 +7,7 @@
           :show="showModal"
           @confirmed="removeNote(note)"
           @canceled="showModal = false">
-          <p>Are you sure?</p>
+          <p>Вы уверены что хотите удалить заметку?</p>
         </Modal>
         <button class="btn remove"
           @click.stop="showModal = true">
@@ -43,7 +43,7 @@
         </li>
       </ul>
 
-      <p v-else class="empty">This note is empty...</p>
+      <p v-else class="empty">Список задач пуст...</p>
     </div>
   </div>
 </template>

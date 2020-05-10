@@ -7,12 +7,12 @@
         <Modal :show="showModalCancel"
           @confirmed="cancelChange"
           @canceled="showModalCancel = false">
-          <p>Are you sure you want to cancel the changes?</p>
+          <p>Вы уверены что хотите отменить все изменения?</p>
         </Modal>
         <Modal :show="showModalRemove"
           @confirmed="removeNote"
           @canceled="showModalRemove = false">
-          <p>Are you sure you want to remove the note?</p>
+          <p>Вы уверены что хотите удалить заметку?</p>
         </Modal>
 
         <router-link to="/" class="btn"><span class="icon icon-back"></span></router-link>
@@ -48,7 +48,7 @@
       <div class="note__body">
         <ResizableTextarea class="note__title"
           v-model="currentState.title"
-          :placeholder="'Title'"
+          :placeholder="'Заголовок'"
         />
 
         <TodoAdd @add-todo="addTodo"/>
@@ -62,8 +62,8 @@
     </div>
 
     <div v-else>
-      <h1>Task not found!</h1>
-      <router-link to="/">BACK</router-link>
+      <h1>Заметка не найдена!</h1>
+      <router-link to="/">Вернуться на главную страницу.</router-link>
     </div>
 
   </div>

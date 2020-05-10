@@ -5,11 +5,11 @@
       <div class="modal">
 
         <div class="modal__header">
-          <h2 class="modal__title">Confirm your actions!</h2>
+          <h2 class="modal__title">Подтвердите ваше действие!</h2>
         </div>
 
         <div class="modal__body">
-          <slot>Are you sure you want to do this?</slot>
+          <slot>Вы уверены что хотите сделать это?</slot>
         </div>
 
         <div class="modal__footer">

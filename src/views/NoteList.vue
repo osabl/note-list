@@ -4,7 +4,7 @@
     <div class="note-creator"
       @click="createNote">
       <div class="note-creator__header">
-        <h2 class="note-creator__title">Create new note</h2>
+        <h2 class="note-creator__title">Добавить заметку</h2>
       </div>
       <div class="note-creator__body">
         <div class="note-creator__create">

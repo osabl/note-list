@@ -3,7 +3,7 @@
 
     <ResizableTextarea class="todo__title"
       v-model="title"
-      :placeholder="'Write your task here'"
+      :placeholder="'Напишите вашу задачу здесь'"
       @keydown-enter.prevent="addTodo"
     />
     <button class="btn btn-submit" type="submit"><span class="icon icon-add"></span></button>

@@ -1,9 +1,8 @@
 <template>
   <div>
 
-    <h1>Error 404 - Page Not Found</h1>
-    <p>The page you were looking for wasn't found</p>
-    <router-link to="/">back home</router-link>
+    <h1>Ошибка 404 - Страница не найдена!</h1>
+    <router-link to="/">Перейти на главную.</router-link>
 
   </div>
 </template>
