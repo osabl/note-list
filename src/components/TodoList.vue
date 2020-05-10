@@ -1,15 +1,19 @@
 <template>
-  <ul v-if="todoList.length" class="todo__list">
+  <transition name="fade" mode="out-in">
+    <div v-if="todoList.length" :key="'list-wrapper'">
+      <transition-group  class="todo__list" name="todo__list" >
 
-    <TodoItem ref="input"
-      v-for="todoItem in todoList"
-      :todo="todoItem"
-      :key="todoItem.id"
-      @remove-todo="removeTodo"
-    />
+        <TodoItem ref="input"
+          v-for="todoItem in todoList"
+          :todo="todoItem"
+          :key="todoItem.id"
+          @remove-todo="removeTodo"
+        />
 
-  </ul>
-  <p v-else class="empty">Todo list is empty!</p>
+      </transition-group>
+    </div>
+    <p v-else class="empty" :key="'empty'">Todo list is empty!</p>
+  </transition>
 </template>
 
 <script>
@@ -37,7 +41,19 @@ export default {
     padding-left: 0;
   }
 
+  .todo__list-move {
+    transition: transform 0.2s;
+  }
+
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity 0.3s;
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
+
   .empty {
     text-align: center;
+    margin: 12px;
   }
 </style>

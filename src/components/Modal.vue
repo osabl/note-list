@@ -1,30 +1,32 @@
 <template>
-  <div v-if="show" @click.self="cancel" class="modal-mask">
+  <transition name="fade">
+    <div v-if="show" @click.self="cancel" class="modal-mask">
 
-    <div class="modal">
+      <div class="modal">
 
-      <div class="modal__header">
-        <h2 class="modal__title">Confirm your actions!</h2>
-      </div>
+        <div class="modal__header">
+          <h2 class="modal__title">Confirm your actions!</h2>
+        </div>
 
-      <div class="modal__body">
-        <slot>Are you sure you want to do this?</slot>
-      </div>
+        <div class="modal__body">
+          <slot>Are you sure you want to do this?</slot>
+        </div>
 
-      <div class="modal__footer">
-        <button class="btn confirm"
-          @click="confirm">
-          <span class="icon icon-ok"></span>
-        </button>
-        <button class="btn cancel"
-          @click="cancel">
-          <span class="icon icon-clean"></span>
-        </button>
+        <div class="modal__footer">
+          <button class="btn confirm"
+            @click="confirm">
+            <span class="icon icon-ok"></span>
+          </button>
+          <button class="btn cancel"
+            @click="cancel">
+            <span class="icon icon-clean"></span>
+          </button>
+        </div>
+
       </div>
 
     </div>
-
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -98,6 +100,14 @@ export default {
 
 .btn:hover {
   color: rgb(212, 0, 255);
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 
 </style>
