@@ -1,7 +1,7 @@
 <template>
   <transition name="fade" mode="out-in">
     <div v-if="todoList.length" :key="'list-wrapper'">
-      <transition-group  class="todo__list" name="todo__list" >
+      <transition-group  class="todo__list" name="todo__list">
 
         <TodoItem ref="input"
           v-for="todoItem in todoList"
