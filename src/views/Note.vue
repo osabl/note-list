@@ -3,47 +3,48 @@
 
     <div v-if="getNote()" class="note">
 
-      <div class="note__actions">
-
-        <Modal :show="showModalCancel"
-          @confirmed="cancelChange"
-          @canceled="showModalCancel = false">
-          <p>Are you sure you want to cancel the changes?</p>
-        </Modal>
-
-        <Modal :show="showModalRemove"
-          @confirmed="removeNote"
-          @canceled="showModalRemove = false">
-          <p>Are you sure you want to remove the note?</p>
-        </Modal>
-
-        <router-link to="/">Back</router-link>
-
-        <button class="btn undo"
-          :disabled="index === 0"
-          @click="undoChange">undo</button>
-        <button class="btn redo"
-          :disabled="index + 1 === history.length"
-          @click="redoChange">redo</button>
-        <button class="btn cancel"
-          :disabled="!isNoteChanged"
-          @click="showModalCancel = true">cancel</button>
-        <button class="btn remove"
-          @click="showModalRemove = true">remove</button>
-        <button class="btn save"
-          :disabled="!isNoteChanged"
-          @click="saveChange">save</button>
-
-      </div>
-
       <div class="note__header">
+        <div class="note__actions">
+
+          <Modal :show="showModalCancel"
+            @confirmed="cancelChange"
+            @canceled="showModalCancel = false">
+            <p>Are you sure you want to cancel the changes?</p>
+          </Modal>
+          <Modal :show="showModalRemove"
+            @confirmed="removeNote"
+            @canceled="showModalRemove = false">
+            <p>Are you sure you want to remove the note?</p>
+          </Modal>
+
+          <router-link to="/">Back</router-link>
+
+          <button class="btn undo"
+            :disabled="index === 0"
+            @click="undoChange">undo</button>
+          <button class="btn redo"
+            :disabled="index + 1 === history.length"
+            @click="redoChange">redo</button>
+          <button class="btn cancel"
+            :disabled="!isNoteChanged"
+            @click="showModalCancel = true">cancel</button>
+          <button class="btn remove"
+            @click="showModalRemove = true">remove</button>
+          <button class="btn save"
+            :disabled="!isNoteChanged"
+            @click="saveChange">save</button>
+
+        </div>
+
         <h2 class="note__title">{{ currentState.title }}</h2>
+
       </div>
 
       <div class="note__body">
         <TodoAdd @add-todo="addTodo"/>
         <TodoList
           :todoList="currentState.list"
+          @add-todo="addTodo"
           @remove-todo="removeTodo"
         />
       </div>
@@ -74,27 +75,21 @@ export default {
     return {
       index: 0, // pointer to the active state in the history of states
       history: [JSON.stringify(this.getNote())], // a history of states for undo and redo action
-      currentState: JSON.parse(JSON.stringify(this.getNote())),
+      currentState: JSON.parse(JSON.stringify(this.getNote())), // copy of the initial state
       lock: false, // to block the watch
       showModalRemove: false, // trigger for show modal dialog to confirm remove note
-      showModalCancel: false, // trigger for show modal dialog to confirm cancel changes
-      backdoor: 0 // hack to update computed property
+      showModalCancel: false // trigger for show modal dialog to confirm cancel changes
     }
   },
 
   computed: {
     isNoteChanged () {
-      // Hack to update this computed property.
-      // This is necessary to update the state of the buttons after note saving.
-      // I did not find another way to solve this problem, yet.
-      // I will change this value to update the property
-      console.log(this.backdoor) // console.log -> because the StandardJS prohibits the use of simple property references
-
       return this.history[this.index] !== JSON.stringify(this.getNote())
     }
   },
 
   watch: {
+    // writes state changes to history
     currentState: {
       handler () {
         if (this.lock) {
@@ -142,16 +137,19 @@ export default {
         this.currentState = JSON.parse(this.history[this.index])
       }
     },
-    cancelChange () {
-      this.showModalCancel = false
+    reset () {
       this.lock = true
       this.index = 0
       this.history = [JSON.stringify(this.getNote())]
       this.currentState = JSON.parse(JSON.stringify(this.getNote()))
     },
+    cancelChange () {
+      this.showModalCancel = false
+      this.reset()
+    },
     saveChange () {
       this.$store.dispatch('updateNote', this.currentState)
-      this.backdoor++ // hack to update computed property after saving
+      this.reset()
     }
   }
 }
