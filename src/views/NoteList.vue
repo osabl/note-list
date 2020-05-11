@@ -4,7 +4,7 @@
     <div class="note-creator"
       @click="createNote">
       <div class="note-creator__header">
-        <h2 class="note-creator__title">Добавить заметку</h2>
+        <h2 class="note-creator__title">Новая заметка</h2>
       </div>
       <div class="note-creator__body">
         <div class="note-creator__create">
@@ -70,11 +70,6 @@ export default {
           box-shadow: 0 0 21px 4px rgba(0,0,0,0.25);
 }
 
-.note-creator__actions {
-  display: flex;
-  justify-content: space-between;
-}
-
 .note-creator__title {
   font-size: 32px;
   font-weight: normal;
@@ -121,6 +116,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  margin-top: 0.5em;
 }
 
 </style>

@@ -32,6 +32,7 @@
             v-show="false"
             :id="todo.id"
             :checked="todo.completed"
+            disabled
           >
           <label class="todo__checkbox-label"
             :for="todo.id">
@@ -43,7 +44,7 @@
         </li>
       </ul>
 
-      <p v-else class="empty">Список задач пуст...</p>
+      <p v-else class="empty">Список задач пуст.</p>
     </div>
   </div>
 </template>

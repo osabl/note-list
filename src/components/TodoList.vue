@@ -12,7 +12,7 @@
 
       </transition-group>
     </div>
-    <p v-else class="empty" :key="'empty'">Список задач пуст...</p>
+    <p v-else class="empty" :key="'empty'">Список задач пуст.</p>
   </transition>
 </template>
 
