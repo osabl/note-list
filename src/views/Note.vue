@@ -1,5 +1,8 @@
 <template>
-  <div class="note-wrapper">
+  <div class="note-wrapper"
+    @keydown.ctrl.90.prevent="undoChange"
+    @keydown.ctrl.89.prevent="redoChange"
+    @keydown.ctrl.83.prevent="saveChange">
 
     <div v-if="getNote()" class="note">
 
